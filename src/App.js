@@ -5,15 +5,16 @@ import { Layout } from "antd";
 
 import { useState } from "react";
 import { compose } from "redux";
+import { Result } from "antd";
 import Analytics from "./components/Analytics/Analytics";
 import Reports from "./components/Reports/Reports";
 import Home from "./components/Home/Home";
 import Navigation from "./components/Navigation/Menu";
 import HabitsContainer from "./components/Habits/HabitsContainer";
 
-const { Footer, Sider } = Layout;
+const { Footer, Sider, Header } = Layout;
 
-function App() {
+function App({ location }) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -24,20 +25,20 @@ function App() {
         onCollapse={() => setCollapsed(!collapsed)}
       >
         <div className="logo" />
-        <Navigation />
+        <Navigation location={location} />
       </Sider>
       <Layout className="site-layout">
-        {/* <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
-          > */}
         <Switch>
           <Route exact path="/" render={() => <Home />} />
           <Route path="/analytics" render={() => <Analytics />} />
-          <Route path="/habits" render={() => <HabitsContainer />} />
+          <Route
+            path="/habits"
+            name="Another page"
+            render={() => <HabitsContainer />}
+          />
           <Route path="/reports" render={() => <Reports />} />
+          <Route render={() => <Result />} />
         </Switch>
-        {/* </div> */}
 
         <Footer style={{ textAlign: "center" }}>AT ©2018</Footer>
       </Layout>

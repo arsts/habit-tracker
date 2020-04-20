@@ -4,37 +4,37 @@ import {
   PieChartOutlined,
   HomeOutlined,
   FileOutlined,
-  UserOutlined
+  UserOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Layout, Menu, Breadcrumb } from "antd";
 
-const Navigation = () => {
+const Navigation = ({ location }) => {
   return (
-    <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-      <Menu.Item key="1">
-        <Link to="/">
+    <Menu theme="dark" mode="inline" selectedKeys={[location.pathname]}>
+      <Menu.Item key="/">
+        <NavLink to="/">
           <HomeOutlined />
           <span>Home</span>
-        </Link>
+        </NavLink>
       </Menu.Item>
-      <Menu.Item key="2">
-        <Link to="/habits">
+      <Menu.Item key="/habits">
+        <NavLink to="/habits">
           <UserOutlined />
           <span>Habits</span>
-        </Link>
+        </NavLink>
       </Menu.Item>
-      <Menu.Item key="3">
-        <Link to="/analytics">
+      <Menu.Item key="/analytics">
+        <NavLink to="/analytics">
           <PieChartOutlined />
           <span>Analytics</span>
-        </Link>
+        </NavLink>
       </Menu.Item>
-      <Menu.Item key="4">
-        <Link to="/reports">
+      <Menu.Item key="/reports">
+        <NavLink to="/reports">
           <FileOutlined />
           <span>Reports</span>
-        </Link>
+        </NavLink>
       </Menu.Item>
     </Menu>
   );
