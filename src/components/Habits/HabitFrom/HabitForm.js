@@ -12,6 +12,7 @@ import {
   Col,
   Card,
 } from "antd";
+import { makeField } from "../../../hoc/MakeField";
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -43,106 +44,73 @@ const tailFormItemLayout = {
   },
 };
 
-const makeField = (Component) => ({
-  input,
-  meta,
-  children,
-  hasFeedback,
-  label,
-  ...rest
-}) => {
-  const hasError = meta.touched && meta.invalid;
+const AInput = makeField(Input, formItemLayout);
+const ASelect = makeField(Select, formItemLayout);
+const ATextarea = makeField(TextArea, formItemLayout);
+const ARangePicker = makeField(RangePicker, formItemLayout);
+
+const HabitForm = ({ onCancel, handleSubmit, pristine, submitting }) => {
   return (
-    <FormItem
-      {...formItemLayout}
-      label={label}
-      validateStatus={hasError ? "error" : "success"}
-      hasFeedback={hasFeedback && hasError}
-      help={hasError && meta.error}
-    >
-      <Component {...input} {...rest} children={children} />
-    </FormItem>
+    <form onSubmit={handleSubmit}>
+      <Field
+        label="Name"
+        name="name"
+        placeholder="Give your habit a name"
+        component={AInput}
+        hasFeedback
+      />
+
+      <Field
+        label="Duration"
+        name="rangepicker"
+        component={ARangePicker}
+        placeholder={["From", "To"]}
+        hasFeedback
+        onFocus={(e) => e.preventDefault()}
+        onBlur={(e) => e.preventDefault()}
+      />
+
+      <Field
+        label="Metric"
+        name="metric"
+        placeholder="What you want to measure"
+        component={AInput}
+      />
+      <Field label="Type of metric" name="typeOfMetric" component={ASelect}>
+        <Option value="boolean">Boolean</Option>
+        <Option value="number">Number</Option>
+        <Option value="time">Time</Option>
+      </Field>
+      <Field label="Description" name="description" component={ATextarea} />
+      <FormItem {...tailFormItemLayout}>
+        <Button disabled={submitting} onClick={onCancel}>
+          Return
+        </Button>
+        <Button
+          type="primary"
+          disabled={pristine || submitting}
+          htmlType="submit"
+          style={{ marginLeft: "10px" }}
+        >
+          Add Habit
+        </Button>
+      </FormItem>
+    </form>
   );
 };
 
-const AInput = makeField(Input);
-const ASelect = makeField(Select);
-const ACheckbox = makeField(Checkbox);
-const ATextarea = makeField(TextArea);
-const ADatePicker = makeField(DatePicker);
-const ARangePicker = makeField(RangePicker);
+const validate = (values) => {
+  const errors = {};
+  if (!values.habitName) {
+    errors.habitName = "Required";
+  }
 
-const HabitForm = ({
-  handleSubmit,
-  onCancel,
-  loading,
-  pristine,
-  reset,
-  submitting,
-}) => {
-  return (
-    <Card title="New Habit" style={{ width: "500px" }}>
-      <form onSubmit={handleSubmit}>
-        <Field
-          label="Name"
-          name="name"
-          placeholder="Give your habit a name"
-          component={AInput}
-          hasFeedback
-        />
-
-        <Field
-          label="Duration"
-          name="rangepicker"
-          component={ARangePicker}
-          placeholder={["From", "To"]}
-          hasFeedback
-          onFocus={(e) => e.preventDefault()}
-          onBlur={(e) => e.preventDefault()}
-        />
-
-        <Field
-          label="Metric"
-          name="metric"
-          placeholder="What you want to measure"
-          component={AInput}
-        />
-        <Field label="Type of metric" name="typeOfMetric" component={ASelect}>
-          <Option value="boolean">Boolean</Option>
-          <Option value="number">Number</Option>
-          <Option value="time">Time</Option>
-        </Field>
-        <Field label="Description" name="description" component={ATextarea} />
-        <FormItem {...tailFormItemLayout}>
-          <Button disabled={submitting} onClick={onCancel}>
-            Return
-          </Button>
-          <Button
-            type="primary"
-            disabled={pristine || submitting}
-            htmlType="submit"
-            style={{ marginLeft: "10px" }}
-          >
-            Add Habit
-          </Button>
-        </FormItem>
-      </form>
-    </Card>
-  );
+  return errors;
 };
-
-// const validate = (values) => {
-//   const errors = {};
-//   if (!values.habitName) {
-//     errors.habitName = "Required";
-//   }
-
-//   return errors;
-// };
 
 const HabitFormRedux = reduxForm({
   form: "habitForm",
+  validate,
 })(HabitForm);
 
 export default HabitFormRedux;
-// ====================================

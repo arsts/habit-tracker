@@ -18,7 +18,15 @@ import {
 const { Header, Content } = Layout;
 const { Search } = Input;
 
-const Habits = ({ addHabit, habits, history }) => {
+const Habits = ({
+  addHabit,
+  setSeachTerm,
+  habits,
+  filterByName,
+  searchTerm,
+  history,
+  filteredHabits,
+}) => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   let { path, url } = useRouteMatch();
@@ -33,14 +41,20 @@ const Habits = ({ addHabit, habits, history }) => {
     history.push("/habits");
   };
 
+  const onSearchHabit = (value) => {
+    setSeachTerm(value);
+  };
+
   return (
     <Fragment>
       <Header className="site-layout-background">
         <Row gutter={[16, 16]}>
           <Col span={4}>
-            <Search
+            <Input
               placeholder="input search text"
-              onSearch={(value) => console.log(value)}
+              onChange={(e) => {
+                onSearchHabit(e.target.value);
+              }}
               style={{ width: 200 }}
             />
           </Col>
@@ -67,7 +81,7 @@ const Habits = ({ addHabit, habits, history }) => {
         <Switch>
           <Route exact path={path}>
             <Row gutter={[16, 16]}>
-              {habits.map((habit) => {
+              {filteredHabits.map((habit) => {
                 return (
                   <Col className="gutter-row">
                     <Card
@@ -94,7 +108,9 @@ const Habits = ({ addHabit, habits, history }) => {
                 alignItems: "center",
               }}
             >
-              <HabitForm onSubmit={onSubmit} onCancel={onCancel} />
+              <Card title="New Habit" style={{ width: "500px" }}>
+                <HabitForm onSubmit={onSubmit} onCancel={onCancel} />
+              </Card>
             </div>
           </Route>
         </Switch>

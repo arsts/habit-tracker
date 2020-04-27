@@ -11,12 +11,18 @@ import Reports from "./components/Reports/Reports";
 import Home from "./components/Home/Home";
 import Navigation from "./components/Navigation/Menu";
 import HabitsContainer from "./components/Habits/HabitsContainer";
+import { useEffect } from "react";
+import Signin from "./components/Signin/Signin";
 
 const { Footer, Sider, Header } = Layout;
 
 function App({ location }) {
   const [collapsed, setCollapsed] = useState(false);
-
+  // useEffect(() => {
+  //   fetch("http://localhost:3000/")
+  //     .then((response) => response.json())
+  //     .then((data) => console.log(data));
+  // });
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
@@ -30,6 +36,7 @@ function App({ location }) {
       <Layout className="site-layout">
         <Switch>
           <Route exact path="/" render={() => <Home />} />
+          <Route path="/signin" render={() => <Signin />} />
           <Route path="/analytics" render={() => <Analytics />} />
           <Route
             path="/habits"

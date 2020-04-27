@@ -1,4 +1,5 @@
 const ADD_HABIT = "habit-tracker/habits/ADD_HABIT";
+const SET_SEARCH_TERM = "habit-tracker/habits/SET_SEARCH_TERM";
 
 //Initialise state
 const initialState = {
@@ -40,16 +41,19 @@ const initialState = {
       metric: "",
     },
   ],
+  searchTerm: "",
 };
 
 export default function habitsReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_HABIT:
-      console.log(action.payload);
       return Object.assign({}, state, {
         habits: [...state.habits, action.payload],
       });
-
+    case SET_SEARCH_TERM:
+      return Object.assign({}, state, {
+        searchTerm: action.payload,
+      });
     default:
       return state;
   }
@@ -58,4 +62,9 @@ export default function habitsReducer(state = initialState, action) {
 export const addHabit = (newHabit) => ({
   type: ADD_HABIT,
   payload: newHabit,
+});
+
+export const setSeachTerm = (searchTerm) => ({
+  type: SET_SEARCH_TERM,
+  payload: searchTerm,
 });
